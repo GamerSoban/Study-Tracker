@@ -1,6 +1,6 @@
 # 📚 Study Tracker (Android)
 
-A simple, privacy-focused Android app to track your study sessions ---
+A simple, privacy-focused Vibe-Coded Android app to track your study sessions ---
 fully offline and locally stored.
 
 ## 🚀 Features
