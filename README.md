@@ -32,12 +32,12 @@ fully offline and locally stored.
 
 ## 🛠️ How It Works
 
-1.  Create a new study session\
+1.  Create a new study session
 2.  Enter:
-    - Start time\
-    - End time\
-    - Actual study time\
-3.  Optionally add breaks\
+    - Start time
+    - End time
+    - Actual study time
+3.  Optionally add breaks
 4.  The app calculates:
     - Time wasted = Session duration - (Study time + Break time)
 
@@ -46,9 +46,9 @@ fully offline and locally stored.
 ## 🎯 Purpose
 
 This app is designed to help students: - Become more aware of their
-study habits\
+study habits
 
-- Reduce wasted time\
+- Reduce wasted time
 - Build disciplined study routines
 
 ## 🔧 Tech Stack
@@ -60,13 +60,13 @@ study habits\
 
 ## 💡 Future Improvements
 
-- Graphs and analytics\
-- Export data (CSV / backup)\
+- Graphs and analytics
+- Export data (CSV / backup)
 - Notifications / reminders
 
 ---
 
 ## 🤝 Contributing
 
-Contributions are welcome!\
+Contributions are welcome!
 Feel free to fork the repo and submit a pull request.
