@@ -75,6 +75,7 @@ export function addSession(session: {
 export function deleteSession(id: string) {
   const sessions = getSessions().filter(s => s.id !== id);
   localStorage.setItem(STORAGE_KEY, JSON.stringify(sessions));
+  syncWidgetData();
 }
 
 export function formatMinutes(mins: number): string {
