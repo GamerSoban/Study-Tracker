@@ -2,10 +2,10 @@ import { useState, useEffect } from "react";
 import { getSessions, getTotals, formatMinutes } from "@/lib/sessions";
 import { StatCard } from "@/components/StatCard";
 import { AddSessionForm } from "@/components/AddSessionForm";
-import { BookOpen, AlertTriangle, Hash } from "lucide-react";
+import { BookOpen, AlertTriangle, Hash, Coffee } from "lucide-react";
 
 const Index = () => {
-  const [totals, setTotals] = useState({ totalStudied: 0, totalWasted: 0, totalSessions: 0 });
+  const [totals, setTotals] = useState({ totalStudied: 0, totalWasted: 0, totalBreaks: 0, totalSessions: 0 });
 
   const refresh = () => setTotals(getTotals(getSessions()));
   useEffect(refresh, []);
@@ -15,7 +15,7 @@ const Index = () => {
       <h1 className="text-2xl font-display font-bold mb-1">Study Tracker</h1>
       <p className="text-sm text-muted-foreground mb-6">Track your focus, own your time.</p>
 
-      <div className="grid grid-cols-2 gap-3 mb-6">
+      <div className="grid grid-cols-2 gap-3 mb-3">
         <StatCard
           label="Studied"
           value={formatMinutes(totals.totalStudied)}
@@ -30,16 +30,22 @@ const Index = () => {
         />
       </div>
 
-      <StatCard
-        label="Total Sessions"
-        value={String(totals.totalSessions)}
-        icon={<Hash className="w-5 h-5" />}
-        variant="neutral"
-      />
-
-      <div className="mt-6">
-        <AddSessionForm onAdded={refresh} />
+      <div className="grid grid-cols-2 gap-3 mb-6">
+        <StatCard
+          label="Breaks"
+          value={formatMinutes(totals.totalBreaks)}
+          icon={<Coffee className="w-5 h-5" />}
+          variant="neutral"
+        />
+        <StatCard
+          label="Sessions"
+          value={String(totals.totalSessions)}
+          icon={<Hash className="w-5 h-5" />}
+          variant="neutral"
+        />
       </div>
+
+      <AddSessionForm onAdded={refresh} />
     </div>
   );
 };
