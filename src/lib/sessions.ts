@@ -1,3 +1,5 @@
+import { syncWidgetData } from './widget';
+
 export interface Break {
   startTime: string;
   durationMinutes: number;
