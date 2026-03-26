@@ -68,6 +68,7 @@ export function addSession(session: {
   
   sessions.unshift(newSession);
   localStorage.setItem(STORAGE_KEY, JSON.stringify(sessions));
+  syncWidgetData();
   return newSession;
 }
 
