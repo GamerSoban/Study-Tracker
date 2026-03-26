@@ -6,7 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { BottomNav } from "@/components/BottomNav";
 import Index from "./pages/Index";
 import Sessions from "./pages/Sessions";
-import Widget from "./pages/Widget";
+
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
