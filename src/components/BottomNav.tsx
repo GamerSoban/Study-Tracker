@@ -1,11 +1,10 @@
 import { NavLink } from "react-router-dom";
-import { Home, History, Smartphone } from "lucide-react";
+import { Home, History } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const links = [
   { to: "/", icon: Home, label: "Home" },
   { to: "/sessions", icon: History, label: "Sessions" },
-  { to: "/widget", icon: Smartphone, label: "Widget" },
 ];
 
 export function BottomNav() {

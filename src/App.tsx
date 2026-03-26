@@ -6,7 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { BottomNav } from "@/components/BottomNav";
 import Index from "./pages/Index";
 import Sessions from "./pages/Sessions";
-import Widget from "./pages/Widget";
+
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -20,7 +20,7 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/sessions" element={<Sessions />} />
-          <Route path="/widget" element={<Widget />} />
+          
           <Route path="*" element={<NotFound />} />
         </Routes>
         <BottomNav />
