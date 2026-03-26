@@ -2,23 +2,24 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="12dp"
+    android:orientation="horizontal"
+    android:padding="8dp"
+    android:gravity="center_vertical"
     android:background="@drawable/widget_background">
 
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="📚 Study Tracker"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:textColor="#FFFFFF"
-        android:layout_marginBottom="8dp" />
+        android:text="📚"
+        android:textSize="18sp"
+        android:layout_marginEnd="8dp" />
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:gravity="center">
 
         <LinearLayout
             android:layout_width="0dp"
@@ -26,21 +27,19 @@
             android:layout_weight="1"
             android:orientation="vertical"
             android:gravity="center">
-
             <TextView
                 android:id="@+id/widget_studied_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="0m"
-                android:textSize="20sp"
+                android:textSize="14sp"
                 android:textStyle="bold"
                 android:textColor="#4ADE80" />
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Studied"
-                android:textSize="11sp"
+                android:text="Study"
+                android:textSize="9sp"
                 android:textColor="#AAAAAA" />
         </LinearLayout>
 
@@ -50,30 +49,21 @@
             android:layout_weight="1"
             android:orientation="vertical"
             android:gravity="center">
-
             <TextView
                 android:id="@+id/widget_wasted_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="0m"
-                android:textSize="20sp"
+                android:textSize="14sp"
                 android:textStyle="bold"
                 android:textColor="#F87171" />
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Wasted"
-                android:textSize="11sp"
+                android:text="Waste"
+                android:textSize="9sp"
                 android:textColor="#AAAAAA" />
         </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="4dp">
 
         <LinearLayout
             android:layout_width="0dp"
@@ -81,21 +71,19 @@
             android:layout_weight="1"
             android:orientation="vertical"
             android:gravity="center">
-
             <TextView
                 android:id="@+id/widget_breaks_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="0m"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:textStyle="bold"
                 android:textColor="#FBBF24" />
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Breaks"
-                android:textSize="11sp"
+                android:text="Break"
+                android:textSize="9sp"
                 android:textColor="#AAAAAA" />
         </LinearLayout>
 
@@ -105,21 +93,19 @@
             android:layout_weight="1"
             android:orientation="vertical"
             android:gravity="center">
-
             <TextView
                 android:id="@+id/widget_sessions_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="0"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:textStyle="bold"
                 android:textColor="#60A5FA" />
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Sessions"
-                android:textSize="11sp"
+                android:text="Sess"
+                android:textSize="9sp"
                 android:textColor="#AAAAAA" />
         </LinearLayout>
     </LinearLayout>
