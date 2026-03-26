@@ -1,9 +1,10 @@
 package app.lovable.studykeeper
 
+import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
-import android.content.SharedPreferences
+import android.content.Intent
 import android.widget.RemoteViews
 
 class StudyWidgetProvider : AppWidgetProvider() {
@@ -41,6 +42,16 @@ class StudyWidgetProvider : AppWidgetProvider() {
             views.setTextViewText(R.id.widget_wasted_value, formatMinutes(totalWasted))
             views.setTextViewText(R.id.widget_breaks_value, formatMinutes(totalBreaks))
             views.setTextViewText(R.id.widget_sessions_value, totalSessions.toString())
+
+            // Add click intent to open the app
+            val intent = Intent(context, MainActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+            }
+            val pendingIntent = PendingIntent.getActivity(
+                context, 0, intent,
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            )
+            views.setOnClickPendingIntent(R.id.widget_root, pendingIntent)
 
             appWidgetManager.updateAppWidget(appWidgetId, views)
         }
