@@ -3,6 +3,7 @@ package app.lovable.studykeeper
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.widget.RemoteViews
@@ -19,12 +20,21 @@ class StudyWidgetProvider : AppWidgetProvider() {
         }
     }
 
+    override fun onReceive(context: Context, intent: Intent) {
+        super.onReceive(context, intent)
+
+        if (intent.action == ACTION_REFRESH) {
+            updateAllWidgets(context)
+        }
+    }
+
     companion object {
         private const val PREFS_NAME = "study_widget_prefs"
         private const val KEY_STUDIED = "total_studied"
         private const val KEY_WASTED = "total_wasted"
         private const val KEY_BREAKS = "total_breaks"
         private const val KEY_SESSIONS = "total_sessions"
+        private const val ACTION_REFRESH = "app.lovable.studykeeper.action.REFRESH_WIDGET"
 
         fun updateAppWidget(
             context: Context,
@@ -43,12 +53,25 @@ class StudyWidgetProvider : AppWidgetProvider() {
             views.setTextViewText(R.id.widget_breaks_value, formatMinutes(totalBreaks))
             views.setTextViewText(R.id.widget_sessions_value, totalSessions.toString())
 
+            val refreshIntent = Intent(context, StudyWidgetProvider::class.java).apply {
+                action = ACTION_REFRESH
+            }
+            val refreshPendingIntent = PendingIntent.getBroadcast(
+                context,
+                appWidgetId + 10_000,
+                refreshIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            )
+            views.setOnClickPendingIntent(R.id.widget_refresh_button, refreshPendingIntent)
+
             // Add click intent to open the app
             val intent = Intent(context, MainActivity::class.java).apply {
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
             }
             val pendingIntent = PendingIntent.getActivity(
-                context, 0, intent,
+                context,
+                appWidgetId,
+                intent,
                 PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
             )
             views.setOnClickPendingIntent(R.id.widget_root, pendingIntent)
@@ -65,9 +88,12 @@ class StudyWidgetProvider : AppWidgetProvider() {
                 .putInt(KEY_SESSIONS, sessions)
                 .apply()
 
-            // Trigger widget refresh
+            updateAllWidgets(context)
+        }
+
+        private fun updateAllWidgets(context: Context) {
             val appWidgetManager = AppWidgetManager.getInstance(context)
-            val widgetComponent = android.content.ComponentName(context, StudyWidgetProvider::class.java)
+            val widgetComponent = ComponentName(context, StudyWidgetProvider::class.java)
             val widgetIds = appWidgetManager.getAppWidgetIds(widgetComponent)
             for (id in widgetIds) {
                 updateAppWidget(context, appWidgetManager, id)
