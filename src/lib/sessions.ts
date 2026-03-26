@@ -1,3 +1,5 @@
+import { syncWidgetData } from './widget';
+
 export interface Break {
   startTime: string;
   durationMinutes: number;
@@ -66,12 +68,14 @@ export function addSession(session: {
   
   sessions.unshift(newSession);
   localStorage.setItem(STORAGE_KEY, JSON.stringify(sessions));
+  syncWidgetData();
   return newSession;
 }
 
 export function deleteSession(id: string) {
   const sessions = getSessions().filter(s => s.id !== id);
   localStorage.setItem(STORAGE_KEY, JSON.stringify(sessions));
+  syncWidgetData();
 }
 
 export function formatMinutes(mins: number): string {
