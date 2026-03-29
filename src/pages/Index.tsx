@@ -75,6 +75,26 @@ const Index = () => {
       </div>
 
       <AddSessionForm onAdded={refresh} />
+
+      {/* Smart Overview */}
+      {sessions.length > 0 && (() => {
+        const insights = getOverallInsights(sessions);
+        return insights.length > 0 ? (
+          <div className="glass-card p-5 mt-6 animate-fade-in">
+            <p className="text-xs font-display font-semibold uppercase tracking-wider text-muted-foreground mb-3">Overview</p>
+            <div className="space-y-2.5">
+              {insights.map((insight, i) => (
+                <div key={i} className="flex items-start gap-2.5">
+                  {insight.type === "success" ? <CheckCircle className="w-4 h-4 text-studied shrink-0 mt-0.5" /> :
+                   insight.type === "warning" ? <AlertCircle className="w-4 h-4 text-wasted shrink-0 mt-0.5" /> :
+                   <Info className="w-4 h-4 text-primary shrink-0 mt-0.5" />}
+                  <p className="text-sm text-foreground/80">{insight.message}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : null;
+      })()}
     </div>
   );
 };

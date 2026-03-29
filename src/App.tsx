@@ -49,6 +49,7 @@ const App = () => {
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/sessions" element={<Sessions />} />
+              <Route path="/session/:id" element={<SessionDetail />} />
               <Route path="/settings" element={<Settings />} />
               <Route path="*" element={<NotFound />} />
             </Routes>

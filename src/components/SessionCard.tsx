@@ -20,14 +20,17 @@ export function SessionCard({ session, onDelete }: Props) {
             {session.startTime} → {session.endTime}
           </p>
         </div>
-        <Button
-          variant="ghost"
-          size="icon"
-          className="h-8 w-8 text-muted-foreground hover:text-wasted"
-          onClick={() => onDelete(session.id)}
-        >
-          <Trash2 className="w-4 h-4" />
-        </Button>
+        <div className="flex items-center gap-1">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-8 w-8 text-muted-foreground hover:text-wasted"
+            onClick={(e) => { e.stopPropagation(); onDelete(session.id); }}
+          >
+            <Trash2 className="w-4 h-4" />
+          </Button>
+          <ChevronRight className="w-4 h-4 text-muted-foreground" />
+        </div>
       </div>
       <div className="grid grid-cols-2 gap-2">
         <div className="flex items-center gap-1.5">
