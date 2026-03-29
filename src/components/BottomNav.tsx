@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 const links = [
   { to: "/", icon: Home, label: "Home" },
   { to: "/sessions", icon: History, label: "Sessions" },
+  { to: "/settings", icon: Settings, label: "Settings" },
 ];
 
 export function BottomNav() {
