@@ -2,16 +2,38 @@ import { useState, useEffect } from "react";
 import { getSessions, deleteSession, StudySession } from "@/lib/sessions";
 import { SessionCard } from "@/components/SessionCard";
 import { toast } from "sonner";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 const Sessions = () => {
   const [sessions, setSessions] = useState<StudySession[]>([]);
+  const [deleteId, setDeleteId] = useState<string | null>(null);
 
-  const refresh = () => setSessions(getSessions());
+  const refresh = () => {
+    const all = getSessions();
+    all.sort((a, b) => {
+      const da = new Date(`${a.date}T${a.startTime}`).getTime();
+      const db = new Date(`${b.date}T${b.startTime}`).getTime();
+      return db - da;
+    });
+    setSessions(all);
+  };
+
   useEffect(refresh, []);
 
-  const handleDelete = (id: string) => {
-    deleteSession(id);
+  const confirmDelete = () => {
+    if (!deleteId) return;
+    deleteSession(deleteId);
     toast.success("Session deleted");
+    setDeleteId(null);
     refresh();
   };
 
@@ -27,10 +49,25 @@ const Sessions = () => {
       ) : (
         <div className="space-y-3">
           {sessions.map(s => (
-            <SessionCard key={s.id} session={s} onDelete={handleDelete} />
+            <SessionCard key={s.id} session={s} onDelete={(id) => setDeleteId(id)} />
           ))}
         </div>
       )}
+
+      <AlertDialog open={!!deleteId} onOpenChange={(open) => !open && setDeleteId(null)}>
+        <AlertDialogContent className="glass-card max-w-sm">
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete session?</AlertDialogTitle>
+            <AlertDialogDescription>This action cannot be undone.</AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={confirmDelete} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };
