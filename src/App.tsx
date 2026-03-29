@@ -10,6 +10,7 @@ import { ThemeProvider } from "@/contexts/ThemeContext";
 import Index from "./pages/Index";
 import Sessions from "./pages/Sessions";
 import Settings from "./pages/Settings";
+import SessionDetail from "./pages/SessionDetail";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -48,6 +49,7 @@ const App = () => {
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/sessions" element={<Sessions />} />
+              <Route path="/session/:id" element={<SessionDetail />} />
               <Route path="/settings" element={<Settings />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
