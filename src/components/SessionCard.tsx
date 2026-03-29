@@ -1,5 +1,6 @@
+import { useNavigate } from "react-router-dom";
 import { StudySession, formatMinutes } from "@/lib/sessions";
-import { Clock, BookOpen, AlertTriangle, Trash2, Coffee } from "lucide-react";
+import { Clock, BookOpen, AlertTriangle, Trash2, Coffee, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface Props {
@@ -8,8 +9,10 @@ interface Props {
 }
 
 export function SessionCard({ session, onDelete }: Props) {
+  const navigate = useNavigate();
+
   return (
-    <div className="glass-card p-4 animate-fade-in">
+    <div className="glass-card p-4 animate-fade-in cursor-pointer" onClick={() => navigate(`/session/${session.id}`)}>
       <div className="flex items-start justify-between mb-3">
         <div>
           <p className="text-sm text-muted-foreground">{session.date}</p>
