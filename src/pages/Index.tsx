@@ -1,8 +1,9 @@
 import { useState, useEffect, useMemo } from "react";
 import { getSessions, getTotals, formatMinutes } from "@/lib/sessions";
+import { getOverallInsights, Insight } from "@/lib/insights";
 import { StatCard } from "@/components/StatCard";
 import { AddSessionForm } from "@/components/AddSessionForm";
-import { BookOpen, AlertTriangle, Hash, Coffee, CalendarDays } from "lucide-react";
+import { BookOpen, AlertTriangle, Hash, Coffee, CalendarDays, CheckCircle, Info, AlertCircle } from "lucide-react";
 
 const Index = () => {
   const [totals, setTotals] = useState({ totalStudied: 0, totalWasted: 0, totalBreaks: 0, totalSessions: 0 });
