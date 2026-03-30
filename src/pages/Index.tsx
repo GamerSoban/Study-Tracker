@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { BookOpen, AlertTriangle, Hash, Coffee, CalendarDays, CheckCircle, Info, AlertCircle, Plus } from "lucide-react";
 
 const Index = () => {
+  const navigate = useNavigate();
   const [sessions, setSessions] = useState<ReturnType<typeof getSessions>>([]);
 
   const refresh = useCallback(() => {
