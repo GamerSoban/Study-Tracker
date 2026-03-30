@@ -51,7 +51,7 @@ export function AddSessionForm({ onAdded }: Props) {
     }
 
     addSession({ date, startTime, endTime, actualStudyMinutes: actualMinutes, breaks });
-    toast.success("Session logged!");
+    toast.success("Session logged!", { duration: 2000 });
     setStartTime("");
     setEndTime("");
     setStudyHours("");
