@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { cn } from "@/lib/utils";
 
 interface StatCardProps {
@@ -7,11 +8,11 @@ interface StatCardProps {
   variant: "studied" | "wasted" | "neutral";
 }
 
-export function StatCard({ label, value, icon, variant }: StatCardProps) {
+export const StatCard = memo(function StatCard({ label, value, icon, variant }: StatCardProps) {
   return (
     <div
       className={cn(
-        "glass-card p-5 animate-fade-in",
+        "glass-card p-5",
         variant === "studied" && "stat-glow-studied",
         variant === "wasted" && "stat-glow-wasted"
       )}
@@ -32,4 +33,4 @@ export function StatCard({ label, value, icon, variant }: StatCardProps) {
       <p className="text-2xl font-bold font-display">{value}</p>
     </div>
   );
-}
+});

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { getSessions, deleteSession, StudySession } from "@/lib/sessions";
 import { SessionCard } from "@/components/SessionCard";
 import { toast } from "sonner";
@@ -17,7 +17,7 @@ const Sessions = () => {
   const [sessions, setSessions] = useState<StudySession[]>([]);
   const [deleteId, setDeleteId] = useState<string | null>(null);
 
-  const refresh = () => {
+  const refresh = useCallback(() => {
     const all = getSessions();
     all.sort((a, b) => {
       const da = new Date(`${a.date}T${a.startTime}`).getTime();
@@ -25,14 +25,16 @@ const Sessions = () => {
       return db - da;
     });
     setSessions(all);
-  };
+  }, []);
 
-  useEffect(refresh, []);
+  useEffect(refresh, [refresh]);
+
+  const handleDelete = useCallback((id: string) => setDeleteId(id), []);
 
   const confirmDelete = () => {
     if (!deleteId) return;
     deleteSession(deleteId);
-    toast.success("Session deleted");
+    toast.success("Session deleted", { duration: 2000 });
     setDeleteId(null);
     refresh();
   };
@@ -49,7 +51,7 @@ const Sessions = () => {
       ) : (
         <div className="space-y-3">
           {sessions.map(s => (
-            <SessionCard key={s.id} session={s} onDelete={(id) => setDeleteId(id)} />
+            <SessionCard key={s.id} session={s} onDelete={handleDelete} />
           ))}
         </div>
       )}
