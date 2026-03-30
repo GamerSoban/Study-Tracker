@@ -57,10 +57,8 @@ const Index = () => {
         <StatCard label="Sessions" value={String(totals.totalSessions)} icon={<Hash className="w-5 h-5" />} variant="neutral" />
       </div>
 
-      <AddSessionForm onAdded={refresh} />
-
       {insights.length > 0 && (
-        <div className="glass-card p-5 mt-6">
+        <div className="glass-card p-5 mb-6">
           <p className="text-xs font-display font-semibold uppercase tracking-wider text-muted-foreground mb-3">Overview</p>
           <div className="space-y-2.5">
             {insights.map((insight, i) => (
@@ -74,6 +72,11 @@ const Index = () => {
           </div>
         </div>
       )}
+
+      <Button onClick={() => navigate("/add-session")} className="w-full gap-2 rounded-xl h-12 text-base font-semibold">
+        <Plus className="w-5 h-5" />
+        Log Session
+      </Button>
     </div>
   );
 };
