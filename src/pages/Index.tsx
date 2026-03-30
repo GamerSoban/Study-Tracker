@@ -1,11 +1,13 @@
 import { useState, useEffect, useMemo, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import { getSessions, getTotals, formatMinutes } from "@/lib/sessions";
 import { getOverallInsights } from "@/lib/insights";
 import { StatCard } from "@/components/StatCard";
-import { AddSessionForm } from "@/components/AddSessionForm";
-import { BookOpen, AlertTriangle, Hash, Coffee, CalendarDays, CheckCircle, Info, AlertCircle } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { BookOpen, AlertTriangle, Hash, Coffee, CalendarDays, CheckCircle, Info, AlertCircle, Plus } from "lucide-react";
 
 const Index = () => {
+  const navigate = useNavigate();
   const [sessions, setSessions] = useState<ReturnType<typeof getSessions>>([]);
 
   const refresh = useCallback(() => {
@@ -55,10 +57,8 @@ const Index = () => {
         <StatCard label="Sessions" value={String(totals.totalSessions)} icon={<Hash className="w-5 h-5" />} variant="neutral" />
       </div>
 
-      <AddSessionForm onAdded={refresh} />
-
       {insights.length > 0 && (
-        <div className="glass-card p-5 mt-6">
+        <div className="glass-card p-5 mb-6">
           <p className="text-xs font-display font-semibold uppercase tracking-wider text-muted-foreground mb-3">Overview</p>
           <div className="space-y-2.5">
             {insights.map((insight, i) => (
@@ -72,6 +72,11 @@ const Index = () => {
           </div>
         </div>
       )}
+
+      <Button onClick={() => navigate("/add-session")} className="w-full gap-2 rounded-xl h-12 text-base font-semibold">
+        <Plus className="w-5 h-5" />
+        Log Session
+      </Button>
     </div>
   );
 };

@@ -12,6 +12,7 @@ const Index = lazy(() => import("./pages/Index"));
 const Sessions = lazy(() => import("./pages/Sessions"));
 const Settings = lazy(() => import("./pages/Settings"));
 const SessionDetail = lazy(() => import("./pages/SessionDetail"));
+const AddSession = lazy(() => import("./pages/AddSession"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
@@ -43,6 +44,7 @@ const App = () => {
                 <Route path="/" element={<Index />} />
                 <Route path="/sessions" element={<Sessions />} />
                 <Route path="/session/:id" element={<SessionDetail />} />
+                <Route path="/add-session" element={<AddSession />} />
                 <Route path="/settings" element={<Settings />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>

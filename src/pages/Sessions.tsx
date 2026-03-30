@@ -1,6 +1,9 @@
 import { useState, useEffect, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import { getSessions, deleteSession, StudySession } from "@/lib/sessions";
 import { SessionCard } from "@/components/SessionCard";
+import { Button } from "@/components/ui/button";
+import { Plus } from "lucide-react";
 import { toast } from "sonner";
 import {
   AlertDialog,
@@ -14,6 +17,7 @@ import {
 } from "@/components/ui/alert-dialog";
 
 const Sessions = () => {
+  const navigate = useNavigate();
   const [sessions, setSessions] = useState<StudySession[]>([]);
   const [deleteId, setDeleteId] = useState<string | null>(null);
 
@@ -41,7 +45,13 @@ const Sessions = () => {
 
   return (
     <div className="min-h-screen pb-24 px-4 pt-6 max-w-lg mx-auto">
-      <h1 className="text-2xl font-display font-bold mb-1">All Sessions</h1>
+      <div className="flex items-center justify-between mb-1">
+        <h1 className="text-2xl font-display font-bold">All Sessions</h1>
+        <Button onClick={() => navigate("/add-session")} size="sm" className="gap-1 rounded-xl">
+          <Plus className="w-4 h-4" />
+          Log Session
+        </Button>
+      </div>
       <p className="text-sm text-muted-foreground mb-6">{sessions.length} sessions logged</p>
 
       {sessions.length === 0 ? (
