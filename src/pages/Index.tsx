@@ -1,9 +1,10 @@
 import { useState, useEffect, useMemo, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import { getSessions, getTotals, formatMinutes } from "@/lib/sessions";
 import { getOverallInsights } from "@/lib/insights";
 import { StatCard } from "@/components/StatCard";
-import { AddSessionForm } from "@/components/AddSessionForm";
-import { BookOpen, AlertTriangle, Hash, Coffee, CalendarDays, CheckCircle, Info, AlertCircle } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { BookOpen, AlertTriangle, Hash, Coffee, CalendarDays, CheckCircle, Info, AlertCircle, Plus } from "lucide-react";
 
 const Index = () => {
   const [sessions, setSessions] = useState<ReturnType<typeof getSessions>>([]);
