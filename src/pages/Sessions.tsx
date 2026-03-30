@@ -1,6 +1,9 @@
 import { useState, useEffect, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import { getSessions, deleteSession, StudySession } from "@/lib/sessions";
 import { SessionCard } from "@/components/SessionCard";
+import { Button } from "@/components/ui/button";
+import { Plus } from "lucide-react";
 import { toast } from "sonner";
 import {
   AlertDialog,
