@@ -45,7 +45,13 @@ const Sessions = () => {
 
   return (
     <div className="min-h-screen pb-24 px-4 pt-6 max-w-lg mx-auto">
-      <h1 className="text-2xl font-display font-bold mb-1">All Sessions</h1>
+      <div className="flex items-center justify-between mb-1">
+        <h1 className="text-2xl font-display font-bold">All Sessions</h1>
+        <Button onClick={() => navigate("/add-session")} size="sm" className="gap-1 rounded-xl">
+          <Plus className="w-4 h-4" />
+          Log Session
+        </Button>
+      </div>
       <p className="text-sm text-muted-foreground mb-6">{sessions.length} sessions logged</p>
 
       {sessions.length === 0 ? (
