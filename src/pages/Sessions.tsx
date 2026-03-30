@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/alert-dialog";
 
 const Sessions = () => {
+  const navigate = useNavigate();
   const [sessions, setSessions] = useState<StudySession[]>([]);
   const [deleteId, setDeleteId] = useState<string | null>(null);
 
