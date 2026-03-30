@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { useNavigate } from "react-router-dom";
 import { StudySession, formatMinutes } from "@/lib/sessions";
 import { Clock, BookOpen, AlertTriangle, Trash2, Coffee, ChevronRight } from "lucide-react";
@@ -8,11 +9,11 @@ interface Props {
   onDelete: (id: string) => void;
 }
 
-export function SessionCard({ session, onDelete }: Props) {
+export const SessionCard = memo(function SessionCard({ session, onDelete }: Props) {
   const navigate = useNavigate();
 
   return (
-    <div className="glass-card p-4 animate-fade-in cursor-pointer" onClick={() => navigate(`/session/${session.id}`)}>
+    <div className="glass-card p-4 cursor-pointer" onClick={() => navigate(`/session/${session.id}`)}>
       <div className="flex items-start justify-between mb-3">
         <div>
           <p className="text-sm text-muted-foreground">{session.date}</p>
@@ -68,4 +69,4 @@ export function SessionCard({ session, onDelete }: Props) {
       )}
     </div>
   );
-}
+});
