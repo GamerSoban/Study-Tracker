@@ -7,6 +7,7 @@ import { BottomNav } from "@/components/BottomNav";
 import { lazy, Suspense, useEffect } from "react";
 import { syncWidgetData } from "@/lib/widget";
 import { ThemeProvider } from "@/contexts/ThemeContext";
+import { AuthProvider } from "@/contexts/AuthContext";
 
 const Index = lazy(() => import("./pages/Index"));
 const Sessions = lazy(() => import("./pages/Sessions"));
