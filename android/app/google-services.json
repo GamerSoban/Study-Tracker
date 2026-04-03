@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "539197238531",
+    "firebase_url": "https://study-tracker-64b96-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "study-tracker-64b96",
+    "storage_bucket": "study-tracker-64b96.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:539197238531:android:4cdaf9a09556a4d0a54d36",
+        "android_client_info": {
+          "package_name": "app.lovable.studykeeper"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAuaNB-pHGEnWQQBf9b78Gv9J6gNCTGbi0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
