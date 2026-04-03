@@ -11,15 +11,10 @@ class MainActivity : BridgeActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         registerPlugin(StudyWidgetPlugin::class.java)
+        registerPlugin(FirebaseAuthPlugin::class.java)
+        registerPlugin(FirestoreSyncPlugin::class.java)
         super.onCreate(savedInstanceState)
 
-        // Initialize Firebase Auth
         auth = Firebase.auth
-
-        // Check if user is already signed in
-        val currentUser = auth.currentUser
-        if (currentUser != null) {
-            // User is signed in
-        }
     }
 }

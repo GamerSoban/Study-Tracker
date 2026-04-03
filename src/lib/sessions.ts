@@ -76,6 +76,8 @@ export function deleteSession(id: string) {
   const sessions = getSessions().filter(s => s.id !== id);
   localStorage.setItem(STORAGE_KEY, JSON.stringify(sessions));
   syncWidgetData();
+  // Attempt remote delete (fire and forget — works only when logged in on native)
+  import('./firestoreSync').then(m => m.deleteRemoteSession(id)).catch(() => {});
 }
 
 export function formatMinutes(mins: number): string {
