@@ -15,6 +15,7 @@ const Settings = lazy(() => import("./pages/Settings"));
 const SessionDetail = lazy(() => import("./pages/SessionDetail"));
 const AddSession = lazy(() => import("./pages/AddSession"));
 const NotFound = lazy(() => import("./pages/NotFound"));
+const Account = lazy(() => import("./pages/Account"));
 
 const queryClient = new QueryClient();
 
