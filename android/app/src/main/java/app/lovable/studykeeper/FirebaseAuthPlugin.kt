@@ -6,15 +6,13 @@ import com.getcapacitor.PluginMethod
 import com.getcapacitor.annotation.CapacitorPlugin
 import com.getcapacitor.JSObject
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 
 @CapacitorPlugin(name = "FirebaseAuth")
 class FirebaseAuthPlugin : Plugin() {
     private lateinit var auth: FirebaseAuth
 
     override fun load() {
-        auth = Firebase.auth
+        auth = FirebaseAuth.getInstance()
     }
 
     @PluginMethod

@@ -6,9 +6,8 @@ import com.getcapacitor.PluginMethod
 import com.getcapacitor.annotation.CapacitorPlugin
 import com.getcapacitor.JSObject
 import com.getcapacitor.JSArray
-import com.google.firebase.auth.ktx.auth
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.ktx.Firebase
 import org.json.JSONObject
 
 @CapacitorPlugin(name = "FirestoreSync")
@@ -20,7 +19,7 @@ class FirestoreSyncPlugin : Plugin() {
     }
 
     private fun getUserId(): String? {
-        return Firebase.auth.currentUser?.uid
+        return FirebaseAuth.getInstance().currentUser?.uid
     }
 
     @PluginMethod
