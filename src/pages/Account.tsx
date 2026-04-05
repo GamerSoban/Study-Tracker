@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ArrowLeft, LogIn, UserPlus } from "lucide-react";
 import { toast } from "sonner";
-import { syncSessions } from "@/lib/firestoreSync";
+import { syncSessions, SyncError } from "@/lib/firestoreSync";
 
 const Account = () => {
   const { user, isLoggedIn, signIn, signUp, signOut, isNativePlatform } = useAuth();
