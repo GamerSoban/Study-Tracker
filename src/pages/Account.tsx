@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ArrowLeft, LogIn, UserPlus } from "lucide-react";
 import { toast } from "sonner";
-import { syncSessions } from "@/lib/firestoreSync";
+import { syncSessions, SyncError } from "@/lib/firestoreSync";
 
 const Account = () => {
   const { user, isLoggedIn, signIn, signUp, signOut, isNativePlatform } = useAuth();
@@ -34,8 +34,12 @@ const Account = () => {
       try {
         const result = await syncSessions();
         toast.success(`Synced ${result.merged} sessions`);
-      } catch {
-        toast.error("Sync failed, but you're signed in");
+      } catch (err) {
+        if (err instanceof SyncError) {
+          toast.error(`Sync error [${err.code}]: ${err.message}`);
+        } else {
+          toast.error("Sync failed after sign-in");
+        }
       }
       navigate("/settings");
     } catch (err: any) {
@@ -94,8 +98,12 @@ const Account = () => {
                 try {
                   const result = await syncSessions();
                   toast.success(`Synced ${result.merged} sessions`);
-                } catch {
-                  toast.error("Sync failed");
+                } catch (err) {
+                  if (err instanceof SyncError) {
+                    toast.error(`Sync error [${err.code}]: ${err.message}`);
+                  } else {
+                    toast.error("Sync failed unexpectedly");
+                  }
                 }
               }}
               variant="outline"
