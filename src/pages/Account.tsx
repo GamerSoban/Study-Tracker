@@ -98,8 +98,12 @@ const Account = () => {
                 try {
                   const result = await syncSessions();
                   toast.success(`Synced ${result.merged} sessions`);
-                } catch {
-                  toast.error("Sync failed");
+                } catch (err) {
+                  if (err instanceof SyncError) {
+                    toast.error(`Sync error [${err.code}]: ${err.message}`);
+                  } else {
+                    toast.error("Sync failed unexpectedly");
+                  }
                 }
               }}
               variant="outline"
