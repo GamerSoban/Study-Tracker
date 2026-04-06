@@ -215,6 +215,7 @@
 @layer utilities {
   .glass-card {
     @apply bg-card border border-border/50 rounded-2xl;
+    contain: content;
   }
   
   .stat-glow-studied {
