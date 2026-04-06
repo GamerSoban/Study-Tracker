@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { getSessions, deleteSession, StudySession } from "@/lib/sessions";
 import { SessionCard } from "@/components/SessionCard";
@@ -16,10 +16,13 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 
+const BATCH_SIZE = 15;
+
 const Sessions = () => {
   const navigate = useNavigate();
   const [sessions, setSessions] = useState<StudySession[]>([]);
   const [deleteId, setDeleteId] = useState<string | null>(null);
+  const [visibleCount, setVisibleCount] = useState(BATCH_SIZE);
 
   const refresh = useCallback(() => {
     const all = getSessions();
@@ -29,6 +32,7 @@ const Sessions = () => {
       return db - da;
     });
     setSessions(all);
+    setVisibleCount(BATCH_SIZE);
   }, []);
 
   useEffect(refresh, [refresh]);
@@ -42,6 +46,25 @@ const Sessions = () => {
     setDeleteId(null);
     refresh();
   };
+
+  const visibleSessions = useMemo(
+    () => sessions.slice(0, visibleCount),
+    [sessions, visibleCount]
+  );
+
+  const handleScroll = useCallback(() => {
+    if (visibleCount >= sessions.length) return;
+    const scrollY = window.scrollY + window.innerHeight;
+    const docH = document.documentElement.scrollHeight;
+    if (scrollY > docH - 400) {
+      setVisibleCount(prev => Math.min(prev + BATCH_SIZE, sessions.length));
+    }
+  }, [visibleCount, sessions.length]);
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [handleScroll]);
 
   return (
     <div className="min-h-screen pb-24 px-4 pt-6 max-w-lg mx-auto">
@@ -60,9 +83,12 @@ const Sessions = () => {
         </div>
       ) : (
         <div className="space-y-3">
-          {sessions.map(s => (
+          {visibleSessions.map(s => (
             <SessionCard key={s.id} session={s} onDelete={handleDelete} />
           ))}
+          {visibleCount < sessions.length && (
+            <p className="text-center text-xs text-muted-foreground py-2">Scroll for more…</p>
+          )}
         </div>
       )}
 
