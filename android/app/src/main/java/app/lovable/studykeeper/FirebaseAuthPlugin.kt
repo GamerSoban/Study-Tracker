@@ -6,7 +6,7 @@ import com.getcapacitor.PluginMethod
 import com.getcapacitor.annotation.CapacitorPlugin
 import com.getcapacitor.JSObject
 import com.google.firebase.auth.FirebaseAuth
-
+    
 @CapacitorPlugin(name = "FirebaseAuth")
 class FirebaseAuthPlugin : Plugin() {
     private lateinit var auth: FirebaseAuth
