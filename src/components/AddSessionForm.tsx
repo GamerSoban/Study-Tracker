@@ -5,13 +5,14 @@ import { Label } from "@/components/ui/label";
 import { addSession, calculateSessionStats, formatMinutes, Break } from "@/lib/sessions";
 import { Plus, Trash2, Coffee, AlertTriangle, Clock, BookOpen } from "lucide-react";
 import { toast } from "sonner";
+import { getLocalDateString } from "@/lib/utils";
 
 interface Props {
   onAdded: () => void;
 }
 
 export function AddSessionForm({ onAdded }: Props) {
-  const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
+  const [date, setDate] = useState(getLocalDateString());
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
   const [studyHours, setStudyHours] = useState("");

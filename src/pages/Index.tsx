@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { getSessions, getTotals, formatMinutes } from "@/lib/sessions";
+import { getLocalDateString } from "@/lib/utils";
 import { getOverallInsights } from "@/lib/insights";
 import { StatCard } from "@/components/StatCard";
 import { Button } from "@/components/ui/button";
@@ -19,7 +20,7 @@ const Index = () => {
   const totals = useMemo(() => getTotals(sessions), [sessions]);
 
   const todayStats = useMemo(() => {
-    const today = new Date().toISOString().split("T")[0];
+    const today = getLocalDateString();
     return getTotals(sessions.filter(s => s.date === today));
   }, [sessions]);
 
