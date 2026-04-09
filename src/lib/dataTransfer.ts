@@ -1,8 +1,6 @@
 import { getSessions, StudySession } from './sessions';
 import { getLocalDateString } from './utils';
 import { Capacitor } from '@capacitor/core';
-import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
-import { Share } from '@capacitor/share';
 
 const STORAGE_KEY = "study-sessions";
 
