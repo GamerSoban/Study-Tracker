@@ -31,7 +31,8 @@ export async function exportSessions(): Promise<void> {
   const fileName = `study-sessions-${getLocalDateString()}.csv`;
 
   if (Capacitor.isNativePlatform()) {
-    // Write to cache, then share via native share sheet
+    const { Filesystem, Directory, Encoding } = await import('@capacitor/filesystem');
+    const { Share } = await import('@capacitor/share');
     const result = await Filesystem.writeFile({
       path: fileName,
       data: csv,
