@@ -15,12 +15,12 @@ const Settings = () => {
   const navigate = useNavigate();
   const fileRef = useRef<HTMLInputElement>(null);
 
-  const handleExport = () => {
+  const handleExport = async () => {
     try {
-      exportSessions();
-      toast.success("Sessions exported as CSV!", { duration: 2000 });
-    } catch {
-      toast.error("No sessions to export.", { duration: 2000 });
+      await exportSessions();
+      toast.success("Sessions exported!", { duration: 2000 });
+    } catch (err: any) {
+      toast.error(err?.message || "Export failed.", { duration: 2000 });
     }
   };
 
