@@ -19,7 +19,7 @@ const Index = () => {
   const totals = useMemo(() => getTotals(sessions), [sessions]);
 
   const todayStats = useMemo(() => {
-    const today = new Date().toISOString().split("T")[0];
+    const today = getLocalDateString();
     return getTotals(sessions.filter(s => s.date === today));
   }, [sessions]);
 

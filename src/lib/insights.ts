@@ -83,7 +83,7 @@ export function getOverallInsights(sessions: StudySession[]): Insight[] {
   }
 
   // Today check
-  const today = new Date().toISOString().split("T")[0];
+  const today = getLocalDateString();
   const todaySessions = sessions.filter(s => s.date === today);
   if (todaySessions.length === 0 && sessions.length > 0) {
     insights.push({ type: "info", message: "No sessions logged today yet — time to get started!" });
