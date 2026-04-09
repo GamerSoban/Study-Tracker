@@ -1,5 +1,8 @@
 import { getSessions, StudySession } from './sessions';
 import { getLocalDateString } from './utils';
+import { Capacitor } from '@capacitor/core';
+import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
+import { Share } from '@capacitor/share';
 
 const STORAGE_KEY = "study-sessions";
 
@@ -10,11 +13,7 @@ function escapeCSV(val: string): string {
   return val;
 }
 
-export function exportSessions(): void {
-  const sessions = getSessions();
-  if (sessions.length === 0) {
-    throw new Error('No sessions to export');
-  }
+function buildCSV(sessions: StudySession[]): string {
   const headers = ['id','date','startTime','endTime','actualStudyMinutes','totalMinutes','wastedMinutes','totalBreakMinutes','breaks'];
   const rows = sessions.map(s => [
     s.id, s.date, s.startTime, s.endTime,
@@ -22,20 +21,46 @@ export function exportSessions(): void {
     String(s.wastedMinutes), String(s.totalBreakMinutes),
     escapeCSV(JSON.stringify(s.breaks))
   ].join(','));
-  const csv = [headers.join(','), ...rows].join('\n');
-  const blob = new Blob([csv], { type: 'text/csv' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = `study-sessions-${getLocalDateString()}.csv`;
-  a.style.display = 'none';
-  document.body.appendChild(a);
-  a.click();
-  // Clean up after a short delay to ensure the download starts
-  setTimeout(() => {
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  }, 100);
+  return [headers.join(','), ...rows].join('\n');
+}
+
+export async function exportSessions(): Promise<void> {
+  const sessions = getSessions();
+  if (sessions.length === 0) {
+    throw new Error('No sessions to export');
+  }
+  const csv = buildCSV(sessions);
+  const fileName = `study-sessions-${getLocalDateString()}.csv`;
+
+  if (Capacitor.isNativePlatform()) {
+    // Write to cache, then share via native share sheet
+    const result = await Filesystem.writeFile({
+      path: fileName,
+      data: csv,
+      directory: Directory.Cache,
+      encoding: Encoding.UTF8,
+    });
+    await Share.share({
+      title: 'Study Sessions Export',
+      text: 'Here are my study sessions',
+      url: result.uri,
+      dialogTitle: 'Export Sessions',
+    });
+  } else {
+    // Web fallback
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = fileName;
+    a.style.display = 'none';
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(() => {
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }, 100);
+  }
 }
 
 function parseCSVLine(line: string): string[] {
