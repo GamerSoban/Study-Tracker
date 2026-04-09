@@ -16,8 +16,12 @@ const Settings = () => {
   const fileRef = useRef<HTMLInputElement>(null);
 
   const handleExport = () => {
-    exportSessions();
-    toast.success("Sessions exported as CSV!", { duration: 2000 });
+    try {
+      exportSessions();
+      toast.success("Sessions exported as CSV!", { duration: 2000 });
+    } catch {
+      toast.error("No sessions to export.", { duration: 2000 });
+    }
   };
 
   const handleImport = async (e: React.ChangeEvent<HTMLInputElement>) => {
