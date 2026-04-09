@@ -43,7 +43,7 @@ export default defineConfig(({ mode }) => ({
   },
   build: {
     rollupOptions: {
-      external: ['@capacitor/filesystem', '@capacitor/share'],
+      external: ['@capacitor/filesystem', '@capacitor/share', '@capacitor/app'],
     },
   },
 }));

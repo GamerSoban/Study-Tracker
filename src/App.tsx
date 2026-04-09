@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -8,6 +8,7 @@ import { lazy, Suspense, useEffect } from "react";
 import { syncWidgetData } from "@/lib/widget";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import { AuthProvider } from "@/contexts/AuthContext";
+import { Capacitor } from "@capacitor/core";
 
 const Index = lazy(() => import("./pages/Index"));
 const Sessions = lazy(() => import("./pages/Sessions"));
@@ -18,6 +19,26 @@ const NotFound = lazy(() => import("./pages/NotFound"));
 const Account = lazy(() => import("./pages/Account"));
 
 const queryClient = new QueryClient();
+
+function BackButtonHandler() {
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!Capacitor.isNativePlatform()) return;
+    let cleanup: (() => void) | undefined;
+    import('@capacitor/app').then(({ App }) => {
+      const listener = App.addListener('backButton', ({ canGoBack }) => {
+        if (canGoBack) {
+          navigate(-1);
+        } else {
+          App.exitApp();
+        }
+      });
+      cleanup = () => { listener.then(h => h.remove()); };
+    });
+    return () => { cleanup?.(); };
+  }, [navigate]);
+  return null;
+}
 
 const App = () => {
   useEffect(() => {
@@ -42,6 +63,7 @@ const App = () => {
             <Toaster />
             <Sonner />
             <BrowserRouter>
+              <BackButtonHandler />
               <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin" /></div>}>
                 <Routes>
                   <Route path="/" element={<Index />} />
