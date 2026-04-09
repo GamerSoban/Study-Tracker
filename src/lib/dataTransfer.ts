@@ -11,6 +11,9 @@ function escapeCSV(val: string): string {
 
 export function exportSessions(): void {
   const sessions = getSessions();
+  if (sessions.length === 0) {
+    throw new Error('No sessions to export');
+  }
   const headers = ['id','date','startTime','endTime','actualStudyMinutes','totalMinutes','wastedMinutes','totalBreakMinutes','breaks'];
   const rows = sessions.map(s => [
     s.id, s.date, s.startTime, s.endTime,
@@ -23,9 +26,15 @@ export function exportSessions(): void {
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = `study-sessions-${new Date().toISOString().split('T')[0]}.csv`;
+  a.download = `study-sessions-${getLocalDateString()}.csv`;
+  a.style.display = 'none';
+  document.body.appendChild(a);
   a.click();
-  URL.revokeObjectURL(url);
+  // Clean up after a short delay to ensure the download starts
+  setTimeout(() => {
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }, 100);
 }
 
 function parseCSVLine(line: string): string[] {
