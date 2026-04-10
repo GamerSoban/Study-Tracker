@@ -4,11 +4,12 @@ import { Capacitor } from '@capacitor/core';
 
 const STORAGE_KEY = "study-sessions";
 
-function escapeCSV(val: string): string {
-  if (val.includes(',') || val.includes('"') || val.includes('\n')) {
-    return `"${val.replace(/"/g, '""')}"`;
+function escapeCSV(val: string | undefined | null): string {
+  const str = val == null ? '' : String(val);
+  if (str.includes(',') || str.includes('"') || str.includes('\n')) {
+    return `"${str.replace(/"/g, '""')}"`;
   }
-  return val;
+  return str;
 }
 
 function buildCSV(sessions: StudySession[]): string {
