@@ -70,9 +70,20 @@ export async function syncSessions(): Promise<{ merged: number }> {
     throw new SyncError('LOCAL_WRITE', 'Failed to save merged sessions locally. Storage may be full.');
   }
 
-  // Upload merged set to Firestore
+  // Upload merged set to Firestore - serialize safely
   try {
-    await FirestoreSync.uploadSessions({ sessions: allSessions });
+    const cleanSessions = allSessions.map(s => ({
+      id: s.id,
+      date: s.date,
+      startTime: s.startTime,
+      endTime: s.endTime,
+      actualStudyMinutes: s.actualStudyMinutes ?? 0,
+      totalMinutes: s.totalMinutes ?? 0,
+      wastedMinutes: s.wastedMinutes ?? 0,
+      totalBreakMinutes: s.totalBreakMinutes ?? 0,
+      breaks: JSON.stringify(s.breaks || []),
+    }));
+    await FirestoreSync.uploadSessions({ sessions: cleanSessions });
   } catch (err: any) {
     const msg = err?.message || '';
     if (msg.includes('PERMISSION_DENIED')) throw new SyncError('PERMISSION', 'Firestore permission denied during upload.');
