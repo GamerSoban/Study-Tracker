@@ -41,12 +41,5 @@ export default defineConfig(({ mode }) => ({
     },
     dedupe: ["react", "react-dom", "react/jsx-runtime", "react/jsx-dev-runtime"],
   },
-  build: {
-    rollupOptions: {
-      onwarn(warning, warn) {
-        if (warning.code === 'UNRESOLVED_IMPORT' && warning.exporter?.startsWith('@capacitor/')) return;
-        warn(warning);
-      },
-    },
-  },
+  build: {},
 }));
