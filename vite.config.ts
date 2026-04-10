@@ -41,9 +41,5 @@ export default defineConfig(({ mode }) => ({
     },
     dedupe: ["react", "react-dom", "react/jsx-runtime", "react/jsx-dev-runtime"],
   },
-  build: {
-    rollupOptions: {
-      external: ['@capacitor/filesystem', '@capacitor/share', '@capacitor/app'],
-    },
-  },
+  build: {},
 }));
