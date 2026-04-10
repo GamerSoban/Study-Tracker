@@ -56,13 +56,14 @@ const Settings = () => {
               </div>
             </div>
             <div className="flex gap-2">
-              <Button
+                <Button
                 onClick={async () => {
                   try {
                     const result = await syncSessions();
                     toast.success(`Synced ${result.merged} sessions`);
-                  } catch {
-                    toast.error("Sync failed");
+                  } catch (err: any) {
+                    console.error('Sync error:', err);
+                    toast.error(err?.message || "Sync failed");
                   }
                 }}
                 variant="outline"

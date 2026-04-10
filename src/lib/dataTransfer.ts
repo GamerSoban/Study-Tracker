@@ -4,20 +4,21 @@ import { Capacitor } from '@capacitor/core';
 
 const STORAGE_KEY = "study-sessions";
 
-function escapeCSV(val: string): string {
-  if (val.includes(',') || val.includes('"') || val.includes('\n')) {
-    return `"${val.replace(/"/g, '""')}"`;
+function escapeCSV(val: string | undefined | null): string {
+  const str = val == null ? '' : String(val);
+  if (str.includes(',') || str.includes('"') || str.includes('\n')) {
+    return `"${str.replace(/"/g, '""')}"`;
   }
-  return val;
+  return str;
 }
 
 function buildCSV(sessions: StudySession[]): string {
   const headers = ['id','date','startTime','endTime','actualStudyMinutes','totalMinutes','wastedMinutes','totalBreakMinutes','breaks'];
   const rows = sessions.map(s => [
-    s.id, s.date, s.startTime, s.endTime,
-    String(s.actualStudyMinutes), String(s.totalMinutes),
-    String(s.wastedMinutes), String(s.totalBreakMinutes),
-    escapeCSV(JSON.stringify(s.breaks))
+    escapeCSV(s.id), escapeCSV(s.date), escapeCSV(s.startTime), escapeCSV(s.endTime),
+    String(s.actualStudyMinutes ?? 0), String(s.totalMinutes ?? 0),
+    String(s.wastedMinutes ?? 0), String(s.totalBreakMinutes ?? 0),
+    escapeCSV(JSON.stringify(s.breaks || []))
   ].join(','));
   return [headers.join(','), ...rows].join('\n');
 }
