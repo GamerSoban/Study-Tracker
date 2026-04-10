@@ -24,18 +24,17 @@ function BackButtonHandler() {
   const navigate = useNavigate();
   useEffect(() => {
     if (!Capacitor.isNativePlatform()) return;
-    let cleanup: (() => void) | undefined;
-    import('@capacitor/app').then(({ App }) => {
-      const listener = App.addListener('backButton', ({ canGoBack }) => {
-        if (canGoBack) {
-          navigate(-1);
-        } else {
-          App.exitApp();
-        }
-      });
-      cleanup = () => { listener.then(h => h.remove()); };
+    const cap = Capacitor as any;
+    const AppPlugin = cap.Plugins?.App;
+    if (!AppPlugin) return;
+    const listener = AppPlugin.addListener('backButton', ({ canGoBack }: { canGoBack: boolean }) => {
+      if (canGoBack) {
+        navigate(-1);
+      } else {
+        AppPlugin.exitApp();
+      }
     });
-    return () => { cleanup?.(); };
+    return () => { listener.then?.((h: any) => h.remove()); };
   }, [navigate]);
   return null;
 }
