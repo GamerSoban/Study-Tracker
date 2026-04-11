@@ -41,7 +41,7 @@ export async function exportSessions(): Promise<void> {
       directory: 'CACHE',
       encoding: 'utf8',
     });
-    await Share.share({
+    await SharePlugin.share({
       title: 'Study Sessions Export',
       text: 'Here are my study sessions',
       url: result.uri,
