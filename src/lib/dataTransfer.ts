@@ -35,11 +35,7 @@ export async function exportSessions(): Promise<void> {
   const fileName = `study-sessions-${getLocalDateString()}.csv`;
 
   if (Capacitor.isNativePlatform()) {
-    const plugins = (Capacitor as any).Plugins;
-    const Filesystem = plugins?.Filesystem;
-    const Share = plugins?.Share;
-    if (!Filesystem || !Share) throw new Error('Native plugins not available');
-    const result = await Filesystem.writeFile({
+    const result = await FilesystemPlugin.writeFile({
       path: fileName,
       data: csv,
       directory: 'CACHE',
