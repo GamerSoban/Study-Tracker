@@ -1,6 +1,9 @@
 import { getSessions, StudySession } from './sessions';
 import { getLocalDateString } from './utils';
-import { Capacitor } from '@capacitor/core';
+import { Capacitor, registerPlugin } from '@capacitor/core';
+
+const FilesystemPlugin: any = registerPlugin('Filesystem');
+const SharePlugin: any = registerPlugin('Share');
 
 const STORAGE_KEY = "study-sessions";
 
