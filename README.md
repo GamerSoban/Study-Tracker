@@ -5,29 +5,29 @@ fully offline and locally stored.
 
 ## 🚀 Features
 
--  **Session Tracking**
+-  ### **Session Tracking**
   - Add study sessions with start and end time
   - Automatically calculates total session duration
--  **Actual Study Time vs Wasted Time**
+-  ### **Actual Study Time vs Wasted Time**
   - Input the _actual time_ you spent studying
   - App calculates **time wasted** for better self-awareness
--  **Break Tracking**
+-  ### **Break Tracking**
   - Add breaks separately instead of marking them as wasted time
   - Helps distinguish between intentional rest and distraction
--  **Clear Insights**
+-  ### **Clear Insights**
   - View:
     - Insights on your Sessions
     - Total sessions
     - Total study time
     - Total wasted time
     - Total break time
--  **Home Screen Widget**
+-  ### **Home Screen Widget**
   - Displays key stats directly on your home screen:
     - Number of sessions
     - Actual study time
     - Wasted time
     - Break time
--  **100% Offline**
+-  ### **100% Offline**
   - No internet required
   - All data stays on your device
 
