@@ -1,9 +1,7 @@
 import { getSessions, StudySession } from './sessions';
 import { getLocalDateString } from './utils';
-import { Capacitor, registerPlugin } from '@capacitor/core';
-
-const FilesystemPlugin: any = registerPlugin('Filesystem');
-const SharePlugin: any = registerPlugin('Share');
+import { Capacitor } from '@capacitor/core';
+import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
 
 const STORAGE_KEY = "study-sessions";
 
@@ -35,18 +33,14 @@ export async function exportSessions(): Promise<void> {
   const fileName = `study-sessions-${getLocalDateString()}.csv`;
 
   if (Capacitor.isNativePlatform()) {
-    const result = await FilesystemPlugin.writeFile({
+    // Save to Downloads directory via Filesystem plugin
+    await Filesystem.writeFile({
       path: fileName,
       data: csv,
-      directory: 'CACHE',
-      encoding: 'utf8',
+      directory: Directory.Documents,
+      encoding: Encoding.UTF8,
     });
-    await SharePlugin.share({
-      title: 'Study Sessions Export',
-      text: 'Here are my study sessions',
-      url: result.uri,
-      dialogTitle: 'Export Sessions',
-    });
+    // File saved — user can find it in their file manager
   } else {
     // Web fallback
     const blob = new Blob([csv], { type: 'text/csv' });
