@@ -18,7 +18,7 @@ const Settings = () => {
   const handleExport = async () => {
     try {
       await exportSessions();
-      toast.success("Sessions exported!", { duration: 2000 });
+      toast.success("Sessions exported! Check your Documents folder.", { duration: 3000 });
     } catch (err: any) {
       toast.error(err?.message || "Export failed.", { duration: 2000 });
     }
@@ -60,7 +60,11 @@ const Settings = () => {
                 onClick={async () => {
                   try {
                     const result = await syncSessions();
-                    toast.success(`Synced ${result.merged} sessions`);
+                    if (result.skipped) {
+                      toast.info("Already up to date");
+                    } else {
+                      toast.success(`Synced ${result.merged} sessions`);
+                    }
                   } catch (err: any) {
                     console.error('Sync error:', err);
                     toast.error(err?.message || "Sync failed");

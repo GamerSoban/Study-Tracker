@@ -4,6 +4,7 @@ import { getSessionInsights, Insight } from "@/lib/insights";
 import { ArrowLeft, Clock, BookOpen, AlertTriangle, Coffee, CheckCircle, Info, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
+import SessionShareImage from "@/components/SessionShareImage";
 
 const insightIcon = (type: Insight["type"]) => {
   switch (type) {
@@ -40,7 +41,10 @@ const SessionDetail = () => {
         <ArrowLeft className="w-4 h-4 mr-2" /> Back
       </Button>
 
-      <h1 className="text-2xl font-display font-bold mb-1">Session Details</h1>
+      <div className="flex items-center justify-between mb-1">
+        <h1 className="text-2xl font-display font-bold">Session Details</h1>
+        <SessionShareImage session={session} />
+      </div>
       <p className="text-sm text-muted-foreground mb-6">
         {session.date} · {session.startTime} → {session.endTime}
       </p>

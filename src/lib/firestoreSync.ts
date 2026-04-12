@@ -10,11 +10,36 @@ export class SyncError extends Error {
   }
 }
 
+function computeHash(sessions: StudySession[]): string {
+  const ids = sessions.map(s => s.id).sort().join(',');
+  // Simple hash — good enough for change detection
+  let hash = 0;
+  for (let i = 0; i < ids.length; i++) {
+    hash = ((hash << 5) - hash + ids.charCodeAt(i)) | 0;
+  }
+  return String(hash);
+}
+
+const LAST_SYNC_HASH_KEY = 'sync-last-hash';
+const LAST_SYNC_TIME_KEY = 'sync-last-time';
+const MIN_SYNC_INTERVAL_MS = 30_000; // 30 seconds minimum between syncs
+
 export async function uploadAllSessions(): Promise<void> {
   const sessions = getSessions();
   if (sessions.length === 0) return;
   try {
-    await FirestoreSync.uploadSessions({ sessions });
+    const cleanSessions = sessions.map(s => ({
+      id: s.id,
+      date: s.date,
+      startTime: s.startTime,
+      endTime: s.endTime,
+      actualStudyMinutes: s.actualStudyMinutes ?? 0,
+      totalMinutes: s.totalMinutes ?? 0,
+      wastedMinutes: s.wastedMinutes ?? 0,
+      totalBreakMinutes: s.totalBreakMinutes ?? 0,
+      breaks: JSON.stringify(s.breaks || []),
+    }));
+    await FirestoreSync.uploadSessions({ sessions: cleanSessions });
   } catch (err: any) {
     const msg = err?.message || '';
     if (msg.includes('Not authenticated')) throw new SyncError('AUTH', 'You must be signed in to upload sessions.');
@@ -39,12 +64,24 @@ export async function downloadAllSessions(): Promise<StudySession[]> {
   }
 }
 
-export async function syncSessions(): Promise<{ merged: number }> {
+export async function syncSessions(force = false): Promise<{ merged: number; skipped?: boolean }> {
+  // Throttle: skip if synced recently and data hasn't changed
+  const lastTime = Number(localStorage.getItem(LAST_SYNC_TIME_KEY) || 0);
+  const now = Date.now();
+
   let local: StudySession[];
   try {
     local = getSessions();
   } catch (err: any) {
     throw new SyncError('LOCAL_READ', 'Failed to read local sessions. Storage may be corrupted.');
+  }
+
+  if (!force && (now - lastTime) < MIN_SYNC_INTERVAL_MS) {
+    const currentHash = computeHash(local);
+    const lastHash = localStorage.getItem(LAST_SYNC_HASH_KEY);
+    if (currentHash === lastHash) {
+      return { merged: local.length, skipped: true };
+    }
   }
 
   let remote: StudySession[];
@@ -63,6 +100,11 @@ export async function syncSessions(): Promise<{ merged: number }> {
   const allSessions = Array.from(merged.values())
     .sort((a, b) => b.date.localeCompare(a.date));
 
+  // Check if anything actually changed
+  const newHash = computeHash(allSessions);
+  const localHash = computeHash(local);
+  const remoteHash = computeHash(remote);
+
   // Save locally
   try {
     localStorage.setItem('study-sessions', JSON.stringify(allSessions));
@@ -70,26 +112,32 @@ export async function syncSessions(): Promise<{ merged: number }> {
     throw new SyncError('LOCAL_WRITE', 'Failed to save merged sessions locally. Storage may be full.');
   }
 
-  // Upload merged set to Firestore - serialize safely
-  try {
-    const cleanSessions = allSessions.map(s => ({
-      id: s.id,
-      date: s.date,
-      startTime: s.startTime,
-      endTime: s.endTime,
-      actualStudyMinutes: s.actualStudyMinutes ?? 0,
-      totalMinutes: s.totalMinutes ?? 0,
-      wastedMinutes: s.wastedMinutes ?? 0,
-      totalBreakMinutes: s.totalBreakMinutes ?? 0,
-      breaks: JSON.stringify(s.breaks || []),
-    }));
-    await FirestoreSync.uploadSessions({ sessions: cleanSessions });
-  } catch (err: any) {
-    const msg = err?.message || '';
-    if (msg.includes('PERMISSION_DENIED')) throw new SyncError('PERMISSION', 'Firestore permission denied during upload.');
-    if (msg.includes('UNAVAILABLE') || msg.includes('network')) throw new SyncError('NETWORK', 'Lost connection during upload. Local data is saved.');
-    throw new SyncError('UPLOAD_FAILED', `Upload after merge failed: ${msg}`);
+  // Only upload if merged differs from remote (avoids unnecessary writes)
+  if (newHash !== remoteHash) {
+    try {
+      const cleanSessions = allSessions.map(s => ({
+        id: s.id,
+        date: s.date,
+        startTime: s.startTime,
+        endTime: s.endTime,
+        actualStudyMinutes: s.actualStudyMinutes ?? 0,
+        totalMinutes: s.totalMinutes ?? 0,
+        wastedMinutes: s.wastedMinutes ?? 0,
+        totalBreakMinutes: s.totalBreakMinutes ?? 0,
+        breaks: JSON.stringify(s.breaks || []),
+      }));
+      await FirestoreSync.uploadSessions({ sessions: cleanSessions });
+    } catch (err: any) {
+      const msg = err?.message || '';
+      if (msg.includes('PERMISSION_DENIED')) throw new SyncError('PERMISSION', 'Firestore permission denied during upload.');
+      if (msg.includes('UNAVAILABLE') || msg.includes('network')) throw new SyncError('NETWORK', 'Lost connection during upload. Local data is saved.');
+      throw new SyncError('UPLOAD_FAILED', `Upload after merge failed: ${msg}`);
+    }
   }
+
+  // Update sync tracking
+  localStorage.setItem(LAST_SYNC_HASH_KEY, newHash);
+  localStorage.setItem(LAST_SYNC_TIME_KEY, String(now));
 
   return { merged: allSessions.length };
 }
