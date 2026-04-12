@@ -143,6 +143,8 @@ const Settings = () => {
           <input ref={fileRef} type="file" accept=".csv" onChange={handleImport} className="hidden" />
         </div>
       </div>
+
+      <p className="text-center text-xs text-muted-foreground mt-6">StudyKeeper V1.1</p>
     </div>
   );
 };
