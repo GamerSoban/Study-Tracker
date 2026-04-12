@@ -16,6 +16,7 @@ fully offline and locally stored.
   - Helps distinguish between intentional rest and distraction
 - 📊 **Clear Insights**
   - View:
+    - Insights on your Sessions
     - Total sessions
     - Total study time
     - Total wasted time
@@ -39,7 +40,8 @@ fully offline and locally stored.
     - Actual study time
 3.  Optionally add breaks
 4.  The app calculates:
-    - Time wasted = Session duration - (Study time + Break time)
+    - Time wasted
+    - Session duration - (Study time + Break time)
 
 ---
 
