@@ -61,7 +61,6 @@ study habits
 ## 💡 Future Improvements
 
 - Graphs and analytics
-- Export data (CSV / backup)
 - Notifications / reminders
 
 ---
