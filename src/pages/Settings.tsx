@@ -18,7 +18,7 @@ const Settings = () => {
   const handleExport = async () => {
     try {
       await exportSessions();
-      toast.success("Sessions exported!", { duration: 2000 });
+      toast.success("Sessions exported! Check your Documents folder.", { duration: 3000 });
     } catch (err: any) {
       toast.error(err?.message || "Export failed.", { duration: 2000 });
     }

@@ -33,7 +33,11 @@ const Account = () => {
       // Auto-sync after login
       try {
         const result = await syncSessions();
-        toast.success(`Synced ${result.merged} sessions`);
+        if (result.skipped) {
+          toast.info("Already up to date");
+        } else {
+          toast.success(`Synced ${result.merged} sessions`);
+        }
       } catch (err) {
         if (err instanceof SyncError) {
           toast.error(`Sync error [${err.code}]: ${err.message}`);
