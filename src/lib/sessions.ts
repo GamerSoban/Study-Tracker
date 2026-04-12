@@ -69,6 +69,8 @@ export function addSession(session: {
   sessions.unshift(newSession);
   localStorage.setItem(STORAGE_KEY, JSON.stringify(sessions));
   syncWidgetData();
+  // Auto-sync to cloud (fire and forget)
+  import('./firestoreSync').then(m => m.syncSessions(true)).catch(() => {});
   return newSession;
 }
 
